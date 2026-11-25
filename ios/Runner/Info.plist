@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>YatraFlow uses the camera to attach a photo to a problem report.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>YatraFlow uses the microphone only when required by the camera system.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
