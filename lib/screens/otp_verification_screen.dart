@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../auth/demo_auth_service.dart';
+import '../localization/app_language.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/primary_button.dart';
 import 'language_selection_screen.dart';
@@ -77,7 +78,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       if (mounted) _startCountdown();
     } on Exception {
       if (mounted) {
-        setState(() => _resendError = 'Could not resend the code. Try again.');
+        setState(() {
+          _resendError = AppLanguage.translate(
+            'Could not resend the code. Try again.',
+          );
+        });
       }
     } finally {
       if (mounted) setState(() => _isResending = false);
@@ -104,7 +109,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           _isVerified = verified;
           _submitted = true;
           if (!verified) {
-            _verificationError = 'That code didn’t match. Please try again.';
+            _verificationError = AppLanguage.translate(
+              'That code didn’t match. Please try again.',
+            );
           }
         });
         if (verified) {
@@ -121,8 +128,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     } on Exception {
       if (mounted) {
         setState(
-          () => _verificationError =
-              'Could not verify the code. Please try again.',
+          () => _verificationError = AppLanguage.translate(
+            'Could not verify the code. Please try again.',
+          ),
         );
       }
     } finally {
@@ -147,7 +155,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
           leading: IconButton(
-            tooltip: 'Back',
+            tooltip: AppLanguage.translate('Back'),
             onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(Icons.arrow_back_rounded),
           ),
@@ -182,7 +190,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       ),
                       SizedBox(height: compact ? 22 : 30),
                       Text(
-                        _isVerified ? 'You’re all set!' : 'Verify your number',
+                        AppLanguage.translate(
+                          _isVerified
+                              ? 'You’re all set!'
+                              : 'Verify your number',
+                        ),
                         style: const TextStyle(
                           color: Color(0xFF252137),
                           fontSize: 29,
@@ -194,8 +206,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       const SizedBox(height: 9),
                       Text(
                         _isVerified
-                            ? 'Your mobile number has been verified.'
-                            : 'Enter the 6-digit code sent to\n$_maskedPhoneNumber',
+                            ? AppLanguage.translate(
+                                'Your mobile number has been verified.',
+                              )
+                            : AppLanguage.text(
+                                'Enter the 6-digit code sent to\n$_maskedPhoneNumber',
+                                '$_maskedPhoneNumber पर भेजा गया 6 अंकों का कोड दर्ज करें',
+                              ),
                         style: const TextStyle(
                           color: Color(0xFF71697F),
                           fontSize: 15,
@@ -203,8 +220,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         ),
                       ),
                       SizedBox(height: compact ? 28 : 38),
-                      const Text(
-                        'Verification code',
+                      Text(
+                        AppLanguage.translate('Verification code'),
                         style: TextStyle(
                           color: Color(0xFF49454F),
                           fontSize: 13,
@@ -218,8 +235,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       ),
                       if (_submitted && !_hasCompleteOtp && !_isVerified) ...[
                         const SizedBox(height: 8),
-                        const Text(
-                          'Enter the complete 6-digit code',
+                        Text(
+                          AppLanguage.translate(
+                            'Enter the complete 6-digit code',
+                          ),
                           style: TextStyle(
                             color: Color(0xFFB3261E),
                             fontSize: 12,
@@ -239,14 +258,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       SizedBox(height: compact ? 24 : 32),
                       if (_isVerified)
                         PrimaryButton(
-                          label: 'Done',
+                          label: AppLanguage.translate('Done'),
                           onPressed: () =>
                               Navigator.of(context)
                                 ..popUntil((route) => route.isFirst),
                         )
                       else
                         PrimaryButton(
-                          label: 'Verify',
+                          label: AppLanguage.translate('Verify'),
                           onPressed: _hasCompleteOtp ? _verify : null,
                           isLoading: _isLoading,
                         ),
@@ -256,8 +275,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           alignment: WrapAlignment.center,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            const Text(
-                              'Didn’t receive the code? ',
+                            Text(
+                              AppLanguage.translate(
+                                'Didn’t receive the code? ',
+                              ),
                               style: TextStyle(
                                 color: Color(0xFF71697F),
                                 fontSize: 13,
@@ -287,8 +308,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 ),
                                 child: Text(
                                   _secondsRemaining == 0
-                                      ? 'Resend code'
-                                      : 'Resend in 00:${_secondsRemaining.toString().padLeft(2, '0')}',
+                                      ? AppLanguage.translate('Resend code')
+                                      : AppLanguage.text(
+                                          'Resend in 00:${_secondsRemaining.toString().padLeft(2, '0')}',
+                                          '00:${_secondsRemaining.toString().padLeft(2, '0')} में फिर भेजें',
+                                        ),
                                   style: TextStyle(
                                     color: _secondsRemaining == 0
                                         ? const Color(0xFF6650B6)
@@ -317,7 +341,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       Center(
                         child: TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Change mobile number'),
+                          child: Text(
+                            AppLanguage.translate('Change mobile number'),
+                          ),
                         ),
                       ),
                       if (!_isVerified) ...[
@@ -400,9 +426,10 @@ class _DemoOtpHint extends StatelessWidget {
         color: const Color(0xFFF0ECFA),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Text(
-        'Demo mode: use 123456 to verify. Replace DemoAuthService with '
-        'Firebase Phone Auth when you are ready.',
+      child: Text(
+        AppLanguage.translate(
+          'Demo mode: use 123456 to verify. Replace DemoAuthService with Firebase Phone Auth when you are ready.',
+        ),
         style: TextStyle(color: Color(0xFF4A4459), fontSize: 12, height: 1.45),
       ),
     );

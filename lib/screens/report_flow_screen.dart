@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../localization/app_language.dart';
+
 const _reportBlue = Color(0xFF2864ED);
 const _reportNavy = Color(0xFF20365D);
 const _reportCanvas = Color(0xFFF0F5FF);
@@ -57,7 +59,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
+      ..showSnackBar(SnackBar(content: Text(AppLanguage.translate(message))));
   }
 
   Future<void> _addPhoto() async {
@@ -85,8 +87,8 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                 ),
               ),
               const SizedBox(height: 18),
-              const Text(
-                'Add a Photo',
+              Text(
+                AppLanguage.translate('Add a Photo'),
                 style: TextStyle(
                   color: _reportNavy,
                   fontSize: 18,
@@ -98,14 +100,14 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                 key: const Key('photo-source-camera'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.camera_alt_outlined),
-                title: const Text('Open Camera'),
+                title: Text(AppLanguage.translate('Open Camera')),
                 onTap: () => Navigator.pop(context, _PhotoSource.camera),
               ),
               ListTile(
                 key: const Key('photo-source-files'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.photo_library_outlined),
-                title: const Text('Select from Files'),
+                title: Text(AppLanguage.translate('Select from Files')),
                 onTap: () => Navigator.pop(context, _PhotoSource.files),
               ),
             ],
@@ -181,7 +183,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
     return _ReportFlowFrame(
       primaryAction: _PrimaryReportButton(
         key: const Key('report-continue-review'),
-        label: 'Continue to Review',
+        label: AppLanguage.translate('Continue to Review'),
         onPressed: _continueToReview,
       ),
       child: Align(
@@ -195,8 +197,8 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
               children: [
                 const _ReportStepHeader(step: 1),
                 const SizedBox(height: 18),
-                const Text(
-                  'Report a Problem',
+                Text(
+                  AppLanguage.translate('Report a Problem'),
                   style: TextStyle(
                     color: _reportNavy,
                     fontSize: 28,
@@ -204,8 +206,10 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  'Help us make this destination better for everyone.',
+                Text(
+                  AppLanguage.translate(
+                    'Help us make this destination better for everyone.',
+                  ),
                   style: TextStyle(
                     color: Color(0xFF66758D),
                     fontSize: 14,
@@ -247,7 +251,9 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   maxLines: 5,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
-                    hintText: 'Tell us a little more about what happened...',
+                    hintText: AppLanguage.translate(
+                      'Tell us a little more about what happened...',
+                    ),
                     hintStyle: const TextStyle(
                       color: Color(0xFF9AA6B8),
                       fontSize: 14,
@@ -273,8 +279,8 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   children: [
                     const _SectionLabel('Add a photo'),
                     const SizedBox(width: 8),
-                    const Text(
-                      '(optional)',
+                    Text(
+                      AppLanguage.translate('(optional)'),
                       style: TextStyle(color: Color(0xFF8995A9), fontSize: 12),
                     ),
                   ],
@@ -291,7 +297,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                     key: const Key('report-add-photo'),
                     onPressed: _addPhoto,
                     icon: const Icon(Icons.add_a_photo_outlined),
-                    label: const Text('Add a Photo'),
+                    label: Text(AppLanguage.translate('Add a Photo')),
                     style: OutlinedButton.styleFrom(
                       alignment: Alignment.centerLeft,
                       foregroundColor: _reportBlue,
@@ -332,7 +338,7 @@ class ReviewYourReportScreen extends StatelessWidget {
     return _ReportFlowFrame(
       primaryAction: _PrimaryReportButton(
         key: const Key('report-submit'),
-        label: 'Submit Report',
+        label: AppLanguage.translate('Submit Report'),
         onPressed: () => _submit(context),
       ),
       child: Align(
@@ -346,8 +352,8 @@ class ReviewYourReportScreen extends StatelessWidget {
               children: [
                 const _ReportStepHeader(step: 2),
                 const SizedBox(height: 18),
-                const Text(
-                  'Review Your Report',
+                Text(
+                  AppLanguage.translate('Review Your Report'),
                   style: TextStyle(
                     color: _reportNavy,
                     fontSize: 28,
@@ -355,8 +361,10 @@ class ReviewYourReportScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  'Please check the details before submitting.',
+                Text(
+                  AppLanguage.translate(
+                    'Please check the details before submitting.',
+                  ),
                   style: TextStyle(
                     color: Color(0xFF66758D),
                     fontSize: 14,
@@ -367,7 +375,7 @@ class ReviewYourReportScreen extends StatelessWidget {
                 _ReviewSection(
                   title: 'CATEGORY',
                   child: Text(
-                    draft.category,
+                    AppLanguage.translate(draft.category),
                     key: const Key('review-category'),
                     style: const TextStyle(
                       color: _reportNavy,
@@ -389,7 +397,7 @@ class ReviewYourReportScreen extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          draft.location,
+                          AppLanguage.translate(draft.location),
                           key: const Key('review-location'),
                           style: const TextStyle(
                             color: _reportNavy,
@@ -406,7 +414,7 @@ class ReviewYourReportScreen extends StatelessWidget {
                   title: 'DESCRIPTION',
                   child: Text(
                     draft.description.isEmpty
-                        ? 'No description provided.'
+                        ? AppLanguage.translate('No description provided.')
                         : draft.description,
                     key: const Key('review-description'),
                     style: const TextStyle(
@@ -420,18 +428,20 @@ class ReviewYourReportScreen extends StatelessWidget {
                 _ReviewSection(
                   title: 'PHOTO',
                   child: draft.photoBytes == null
-                      ? const Row(
+                      ? Row(
                           children: [
                             Icon(
                               Icons.image_outlined,
                               color: Color(0xFF8995A9),
                             ),
                             SizedBox(width: 8),
-                            Text(
-                              'No photo added',
-                              style: TextStyle(
-                                color: Color(0xFF66758D),
-                                fontSize: 14,
+                            Expanded(
+                              child: Text(
+                                AppLanguage.translate('No photo added'),
+                                style: const TextStyle(
+                                  color: Color(0xFF66758D),
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ],
@@ -444,10 +454,14 @@ class ReviewYourReportScreen extends StatelessWidget {
                             height: 190,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) => const SizedBox(
+                            errorBuilder: (_, _, _) => SizedBox(
                               height: 80,
                               child: Center(
-                                child: Text('Photo preview unavailable'),
+                                child: Text(
+                                  AppLanguage.translate(
+                                    'Photo preview unavailable',
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -492,8 +506,8 @@ class ReportSubmittedScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Report Submitted!',
+                Text(
+                  AppLanguage.translate('Report Submitted!'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: _reportNavy,
@@ -502,8 +516,10 @@ class ReportSubmittedScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Thank you for helping us improve this destination.',
+                Text(
+                  AppLanguage.translate(
+                    'Thank you for helping us improve this destination.',
+                  ),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF66758D),
@@ -525,8 +541,8 @@ class ReportSubmittedScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      const Text(
-                        'REPORT ID',
+                      Text(
+                        AppLanguage.translate('REPORT ID'),
                         style: TextStyle(
                           color: Color(0xFF66758D),
                           fontSize: 12,
@@ -546,8 +562,8 @@ class ReportSubmittedScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      const Text(
-                        'Keep this ID for reference',
+                      Text(
+                        AppLanguage.translate('Keep this ID for reference'),
                         style: TextStyle(
                           color: Color(0xFF66758D),
                           fontSize: 13,
@@ -559,7 +575,7 @@ class ReportSubmittedScreen extends StatelessWidget {
                 const SizedBox(height: 28),
                 _PrimaryReportButton(
                   key: const Key('report-back-home'),
-                  label: 'Back to Home',
+                  label: AppLanguage.translate('Back to Home'),
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
                 ),
@@ -696,7 +712,7 @@ class _ReportCameraScreenState extends State<ReportCameraScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Take a Photo'),
+        title: Text(AppLanguage.translate('Take a Photo')),
         foregroundColor: Colors.white,
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -715,14 +731,14 @@ class _ReportCameraScreenState extends State<ReportCameraScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      _errorMessage!,
+                      AppLanguage.translate(_errorMessage!),
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 15),
                     ),
                     const SizedBox(height: 20),
                     OutlinedButton(
                       onPressed: _initializeCamera,
-                      child: const Text('Try Again'),
+                      child: Text(AppLanguage.translate('Try Again')),
                     ),
                   ],
                 ),
@@ -863,7 +879,7 @@ class _ReportBottomNavigationState extends State<_ReportBottomNavigation> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        _tabs[index].$2,
+                        AppLanguage.translate(_tabs[index].$2),
                         style: TextStyle(
                           fontSize: 10,
                           color: _selectedTab == index
@@ -947,9 +963,9 @@ class _ReportChatSheetState extends State<_ReportChatSheet> {
               children: [
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'Hello! So how may I help you?',
+                        AppLanguage.translate('Hello! So how may I help you?'),
                         style: TextStyle(
                           color: _reportNavy,
                           fontWeight: FontWeight.w700,
@@ -957,7 +973,7 @@ class _ReportChatSheetState extends State<_ReportChatSheet> {
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Close',
+                      tooltip: AppLanguage.translate('Close'),
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.close_rounded),
                     ),
@@ -969,9 +985,11 @@ class _ReportChatSheetState extends State<_ReportChatSheet> {
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) => _messageController.clear(),
                   decoration: InputDecoration(
-                    hintText: 'What would you like to know?',
+                    hintText: AppLanguage.translate(
+                      'What would you like to know?',
+                    ),
                     suffixIcon: IconButton(
-                      tooltip: 'Send message',
+                      tooltip: AppLanguage.translate('Send message'),
                       onPressed: _messageController.clear,
                       icon: const Icon(Icons.arrow_upward_rounded),
                     ),
@@ -1006,7 +1024,7 @@ class _ReportStepHeader extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             key: const Key('report-back'),
-            tooltip: 'Go back',
+            tooltip: AppLanguage.translate('Go back'),
             onPressed: () => Navigator.of(context).maybePop(),
             icon: const Icon(Icons.arrow_back_rounded),
             color: _reportNavy,
@@ -1014,7 +1032,7 @@ class _ReportStepHeader extends StatelessWidget {
         ),
         const Spacer(),
         Text(
-          'STEP $step OF 3',
+          AppLanguage.text('STEP $step OF 3', 'चरण $step / 3'),
           style: const TextStyle(
             color: Color(0xFF66758D),
             fontSize: 11,
@@ -1035,7 +1053,7 @@ class _SectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      label,
+      AppLanguage.translate(label),
       style: const TextStyle(
         color: _reportNavy,
         fontSize: 15,
@@ -1069,7 +1087,7 @@ class _CategoryTile extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: category.label,
+      label: AppLanguage.translate(category.label),
       child: Material(
         color: selected ? const Color(0xFFE1EBFF) : Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -1092,7 +1110,7 @@ class _CategoryTile extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    category.label,
+                    AppLanguage.translate(category.label),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -1160,8 +1178,8 @@ class _SelectedPhoto extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Photo attached',
+                Text(
+                  AppLanguage.translate('Photo attached'),
                   style: TextStyle(
                     color: _reportNavy,
                     fontWeight: FontWeight.w600,
@@ -1174,14 +1192,14 @@ class _SelectedPhoto extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     padding: EdgeInsets.zero,
                   ),
-                  child: const Text('Replace photo'),
+                  child: Text(AppLanguage.translate('Replace photo')),
                 ),
               ],
             ),
           ),
           IconButton(
             key: const Key('report-remove-photo'),
-            tooltip: 'Remove photo',
+            tooltip: AppLanguage.translate('Remove photo'),
             onPressed: onRemove,
             icon: const Icon(Icons.delete_outline_rounded),
             color: const Color(0xFF66758D),
@@ -1212,7 +1230,7 @@ class _ReviewSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            AppLanguage.translate(title),
             style: const TextStyle(
               color: Color(0xFF66758D),
               fontSize: 11,
@@ -1252,7 +1270,7 @@ class _PrimaryReportButton extends StatelessWidget {
           ),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
         ),
-        child: Text(label),
+        child: Text(AppLanguage.translate(label)),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../localization/app_language.dart';
 import 'home_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
@@ -23,9 +24,27 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     'Hindi': 'Hindi (हिन्दी)',
   };
 
-  String _selectedLanguage = 'English';
+  String _selectedLanguage = AppLanguage.current;
 
-  void _continue() {
+  Future<void> _continue() async {
+    try {
+      await AppLanguage.setLanguage(_selectedLanguage);
+    } on AppLanguagePersistenceException {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLanguage.text(
+                'Could not save your language preference. Please try again.',
+                'भाषा की प्राथमिकता सहेजी नहीं जा सकी। कृपया फिर से कोशिश करें।',
+              ),
+            ),
+          ),
+        );
+      }
+      return;
+    }
+    if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute<void>(
         builder: (_) => HomeScreen(
@@ -48,8 +67,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Select your language',
+              Text(
+                AppLanguage.translate('Select your language'),
                 style: TextStyle(
                   color: Color(0xFF20365D),
                   fontSize: 16,
@@ -83,7 +102,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                         .map(
                           (language) => DropdownMenuItem<String>(
                             value: language.key,
-                            child: Text(language.value),
+                            child: Text(AppLanguage.translate(language.value)),
                           ),
                         )
                         .toList(),
@@ -109,8 +128,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       borderRadius: BorderRadius.circular(9),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
+                  child: Text(
+                    AppLanguage.translate('Continue'),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),

@@ -1,11 +1,279 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:yatra_flow/localization/app_language.dart';
 import 'package:yatra_flow/main.dart';
+import 'package:yatra_flow/models/profile_data.dart';
 import 'package:yatra_flow/screens/home_screen.dart';
 import 'package:yatra_flow/widgets/auth_background.dart';
 
 void main() {
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    await AppLanguage.setLanguage('English');
+  });
+
+  testWidgets(
+    'profile menu opens profile and edit save/cancel persists the right data',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      SharedPreferences.setMockInitialValues({});
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: HomeScreen(
+            language: 'English',
+            phoneNumber: '9876543210',
+            countryCode: '+91',
+          ),
+        ),
+      );
+      await tester.tap(find.byKey(const Key('home-menu')));
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('menu-profile')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('My profile'), findsOneWidget);
+      expect(find.text('Aarav Sharma'), findsOneWidget);
+      expect(find.textContaining('YF102849'), findsOneWidget);
+      expect(find.text('+91 98765 43210'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('profile-edit')));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const Key('profile-full-name')),
+        'Cancelled Name',
+      );
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-cancel')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.tap(find.byKey(const Key('profile-cancel')));
+      await tester.pumpAndSettle();
+      expect(find.text('Aarav Sharma'), findsOneWidget);
+      expect(find.text('Cancelled Name'), findsNothing);
+
+      await tester.tap(find.byKey(const Key('profile-edit')));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const Key('profile-full-name')),
+        'Riya Mehta',
+      );
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-city-dropdown')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.tap(find.byKey(const Key('profile-city-dropdown')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Jaipur, India').last);
+      await tester.pumpAndSettle();
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-language-dropdown')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.tap(find.byKey(const Key('profile-language-dropdown')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('English').last);
+      await tester.pumpAndSettle();
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-travel-style-dropdown')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.tap(find.byKey(const Key('profile-travel-style-dropdown')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Spiritual').last);
+      await tester.pumpAndSettle();
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-emergency-contact-name')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.enterText(
+        find.byKey(const Key('profile-emergency-contact-name')),
+        'Amit Kumar',
+      );
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-emergency-contact-phone')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.enterText(
+        find.byKey(const Key('profile-emergency-contact-phone')),
+        '+91 98765 50000',
+      );
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-notifications-toggle')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      expect(
+        tester
+            .widget<SwitchListTile>(
+              find.byKey(const Key('profile-notifications-toggle')),
+            )
+            .value,
+        isTrue,
+      );
+      await tester.tap(find.byKey(const Key('profile-notifications-toggle')));
+      await tester.pump();
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-privacy-settings')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.ensureVisible(
+        find.byKey(const Key('profile-privacy-settings')),
+      );
+      await tester.tap(find.byKey(const Key('profile-privacy-settings')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('privacy-public-toggle')));
+      await tester.pump();
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-save')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      await tester.tap(find.byKey(const Key('profile-save')));
+      await tester.pumpAndSettle();
+      expect(find.text('Riya Mehta'), findsOneWidget);
+      expect(find.text('Jaipur, India'), findsOneWidget);
+      expect(find.text('English'), findsOneWidget);
+      expect(find.text('Spiritual'), findsOneWidget);
+      expect(find.text('Amit Kumar · +91 98765 50000'), findsOneWidget);
+      final savedProfile = await ProfileStorage.load(
+        fallbackPhoneNumber: '+91 98765 43210',
+      );
+      expect(savedProfile.emergencyContactName, 'Amit Kumar');
+      expect(savedProfile.emergencyContactPhone, '+91 98765 50000');
+      expect(savedProfile.isProfilePublic, isFalse);
+
+      await tester.tap(find.byKey(const Key('profile-back')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('home-menu')));
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('menu-profile')));
+      await tester.pumpAndSettle();
+      expect(find.text('Riya Mehta'), findsOneWidget);
+      expect(find.text('Jaipur, India'), findsOneWidget);
+      expect(find.text('Amit Kumar · +91 98765 50000'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('profile-edit')));
+      await tester.pumpAndSettle();
+      await tester.dragUntilVisible(
+        find.byKey(const Key('profile-notifications-toggle')),
+        find.byType(ListView),
+        const Offset(0, -350),
+      );
+      expect(
+        tester
+            .widget<SwitchListTile>(
+              find.byKey(const Key('profile-notifications-toggle')),
+            )
+            .value,
+        isFalse,
+      );
+    },
+  );
+
+  testWidgets('profile language change localizes home and persists', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      ValueListenableBuilder<String>(
+        valueListenable: AppLanguage.language,
+        builder: (context, language, _) => MaterialApp(
+          home: HomeScreen(
+            language: language,
+            phoneNumber: '9876543210',
+            countryCode: '+91',
+          ),
+        ),
+      ),
+    );
+    expect(find.text('Search destinations, tourist places...'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('home-menu')));
+    await tester.pump();
+    await tester.tap(find.byKey(const Key('menu-profile')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('profile-edit')));
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.byKey(const Key('profile-language-dropdown')),
+      find.byType(ListView),
+      const Offset(0, -350),
+    );
+    await tester.tap(find.byKey(const Key('profile-language-dropdown')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Hindi').last);
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.byKey(const Key('profile-save')),
+      find.byType(ListView),
+      const Offset(0, -350),
+    );
+    await tester.tap(find.byKey(const Key('profile-save')));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+
+    expect(find.text('मेरी प्रोफ़ाइल'), findsOneWidget);
+    expect(find.text('व्यक्तिगत जानकारी'), findsOneWidget);
+    expect(find.text('आपातकालीन संपर्क'), findsOneWidget);
+    final savedProfile = await ProfileStorage.load(
+      fallbackPhoneNumber: '+91 98765 43210',
+    );
+    expect(savedProfile.language, 'Hindi');
+    await AppLanguage.load();
+    expect(AppLanguage.current, 'Hindi');
+
+    await tester.tap(find.byKey(const Key('profile-back')));
+    await tester.pumpAndSettle();
+    expect(find.text('मंज़िलें और पर्यटन स्थल खोजें...'), findsOneWidget);
+    expect(find.text('मेन्यू'), findsNothing);
+
+    await tester.tap(find.byKey(const Key('report-problem-card')));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('समस्या की रिपोर्ट करें'), findsOneWidget);
+    expect(find.text('स्वच्छता'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('category-Cleanliness')));
+    await tester.tap(find.byKey(const Key('report-continue-review')));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('अपनी रिपोर्ट की समीक्षा करें'), findsOneWidget);
+    expect(find.text('स्वच्छता'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('report-submit')));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('रिपोर्ट सबमिट हो गई!'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('report-back-home')));
+    await tester.pumpAndSettle();
+    expect(find.text('मंज़िलें और पर्यटन स्थल खोजें...'), findsOneWidget);
+  });
+
   testWidgets(
     'report flow validates, reviews selected data, and returns home',
     (tester) async {
@@ -178,7 +446,7 @@ void main() {
     );
     await tester.tap(find.byKey(const Key('registration-dob')));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('OK'));
+    await tester.tap(find.text('ठीक है'));
     await tester.pumpAndSettle();
     await tester.enterText(
       find.byKey(const Key('registration-address')),

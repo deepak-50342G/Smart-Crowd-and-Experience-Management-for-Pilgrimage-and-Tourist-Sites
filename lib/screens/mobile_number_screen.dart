@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../auth/demo_auth_service.dart';
+import '../localization/app_language.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/primary_button.dart';
 import 'otp_verification_screen.dart';
@@ -49,8 +50,13 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
 
   String? get _phoneError {
     if (!_submitted || _hasValidNumber) return null;
-    if (_phoneController.text.isEmpty) return 'Enter your mobile number';
-    return 'Enter a valid ${_country.numberLength}-digit mobile number';
+    if (_phoneController.text.isEmpty) {
+      return AppLanguage.translate('Enter your mobile number');
+    }
+    return AppLanguage.text(
+      'Enter a valid ${_country.numberLength}-digit mobile number',
+      '${_country.numberLength} अंकों का मान्य मोबाइल नंबर दर्ज करें',
+    );
   }
 
   Future<void> _continue() async {
@@ -97,12 +103,12 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(24, 4, 24, 12),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Select country',
+                        AppLanguage.translate('Select country'),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -116,7 +122,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                         country.flag,
                         style: const TextStyle(fontSize: 24),
                       ),
-                      title: Text(country.name),
+                      title: Text(AppLanguage.translate(country.name)),
                       trailing: Text(
                         country.code,
                         style: const TextStyle(fontWeight: FontWeight.w600),
@@ -182,7 +188,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Your journey starts here',
+                              AppLanguage.translate('Your journey starts here'),
                               style: TextStyle(
                                 color: const Color(0xFF252137),
                                 fontSize: compact ? 27 : 30,
@@ -192,8 +198,10 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text(
-                              'Enter your mobile number to continue',
+                            Text(
+                              AppLanguage.translate(
+                                'Enter your mobile number to continue',
+                              ),
                               style: TextStyle(
                                 color: Color(0xFF71697F),
                                 fontSize: 15,
@@ -201,8 +209,8 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                               ),
                             ),
                             SizedBox(height: compact ? 24 : 30),
-                            const Text(
-                              'Mobile number',
+                            Text(
+                              AppLanguage.translate('Mobile number'),
                               style: TextStyle(
                                 color: Color(0xFF49454F),
                                 fontSize: 13,
@@ -228,8 +236,10 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                             ),
                             if (_requestFailed) ...[
                               const SizedBox(height: 8),
-                              const Text(
-                                'Could not send a code. Please try again.',
+                              Text(
+                                AppLanguage.translate(
+                                  'Could not send a code. Please try again.',
+                                ),
                                 style: TextStyle(
                                   color: Color(0xFFB3261E),
                                   fontSize: 12,
@@ -238,16 +248,18 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
                             ],
                             SizedBox(height: compact ? 18 : 24),
                             PrimaryButton(
-                              label: 'Continue',
+                              label: AppLanguage.translate('Continue'),
                               onPressed: _canSubmit && !_isLoading
                                   ? _continue
                                   : null,
                               isLoading: _isLoading,
                             ),
                             const SizedBox(height: 14),
-                            const Center(
+                            Center(
                               child: Text(
-                                'We’ll send you a one-time verification code',
+                                AppLanguage.translate(
+                                  'We’ll send you a one-time verification code',
+                                ),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFF71697F),
@@ -273,14 +285,16 @@ class _MobileNumberScreenState extends State<MobileNumberScreen> {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Need help?'),
-        content: const Text(
-          'Enter a valid 10-digit mobile number to receive a verification code.',
+        title: Text(AppLanguage.translate('Need help?')),
+        content: Text(
+          AppLanguage.translate(
+            'Enter a valid 10-digit mobile number to receive a verification code.',
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Got it'),
+            child: Text(AppLanguage.translate('Got it')),
           ),
         ],
       ),
@@ -426,8 +440,8 @@ class _PhoneField extends StatelessWidget {
                     fontSize: 16,
                     letterSpacing: 0.5,
                   ),
-                  decoration: const InputDecoration(
-                    hintText: 'Enter mobile number',
+                  decoration: InputDecoration(
+                    hintText: AppLanguage.translate('Enter mobile number'),
                     hintStyle: TextStyle(
                       color: Color(0xFFAAA5B2),
                       fontSize: 14,
