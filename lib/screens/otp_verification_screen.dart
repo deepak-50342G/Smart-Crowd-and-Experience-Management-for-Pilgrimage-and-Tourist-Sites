@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../auth/demo_auth_service.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/primary_button.dart';
+import 'language_selection_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({
@@ -106,6 +107,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             _verificationError = 'That code didn’t match. Please try again.';
           }
         });
+        if (verified) {
+          await Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => LanguageSelectionScreen(
+                phoneNumber: widget.phoneNumber,
+                countryCode: widget.countryCode,
+              ),
+            ),
+          );
+        }
       }
     } on Exception {
       if (mounted) {
