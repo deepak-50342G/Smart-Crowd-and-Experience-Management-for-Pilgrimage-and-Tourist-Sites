@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # yatra_flow
 
 A new Flutter project.
@@ -15,3 +16,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# Smart-Crowd-and-Experience-Management-for-Pilgrimage-and-Tourist-Sites
+A visitor app with crowd-level predictions, slot booking, live wait times and personalised route suggestions and An admin dashboard for authorities to monitor and manage crowd flow
+>>>>>>> 6192c0d7ed286d7ea05e8b96d0e080de31eb3c78
