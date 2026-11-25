@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'registration_flow_screen.dart';
+import 'report_flow_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -81,6 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageAsset:
                                     'assets/images/home/report_problem.jpg',
                                 color: const Color(0xFF3B171C),
+                                cardKey: const Key('report-problem-card'),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) => const ReportProblemScreen(),
+                                  ),
+                                ),
                               ),
                               _FeatureCard(
                                 title: _text('Near Places', 'आस-पास की जगहें'),
@@ -400,12 +407,14 @@ class _FeatureCard extends StatelessWidget {
     required this.imageAsset,
     required this.color,
     this.onTap,
+    this.cardKey,
   });
 
   final String title;
   final String imageAsset;
   final Color color;
   final VoidCallback? onTap;
+  final Key? cardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +422,7 @@ class _FeatureCard extends StatelessWidget {
       color: color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        key: onTap == null ? null : const Key('register-card'),
+        key: cardKey ?? (onTap == null ? null : const Key('register-card')),
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(

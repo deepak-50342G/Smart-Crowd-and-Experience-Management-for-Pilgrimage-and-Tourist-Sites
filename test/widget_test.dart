@@ -2,9 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:yatra_flow/main.dart';
+import 'package:yatra_flow/screens/home_screen.dart';
 import 'package:yatra_flow/widgets/auth_background.dart';
 
 void main() {
+  testWidgets(
+    'report flow validates, reviews selected data, and returns home',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        const MaterialApp(home: HomeScreen(language: 'English')),
+      );
+      await tester.tap(find.byKey(const Key('report-problem-card')));
+      await tester.pumpAndSettle();
+      expect(find.text('Report a Problem'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('report-continue-review')));
+      await tester.pump();
+      expect(
+        find.text('Please select a problem category to continue.'),
+        findsOneWidget,
+      );
+
+      await tester.ensureVisible(find.byKey(const Key('category-Parking')));
+      await tester.tap(find.byKey(const Key('category-Parking')));
+      await tester.ensureVisible(find.byKey(const Key('report-description')));
+      await tester.enterText(
+        find.byKey(const Key('report-description')),
+        'The parking area is blocked.',
+      );
+      await tester.tap(find.byKey(const Key('report-continue-review')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Review Your Report'), findsOneWidget);
+      expect(find.text('Parking'), findsOneWidget);
+      expect(find.text('The parking area is blocked.'), findsOneWidget);
+      expect(find.text('Not provided'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('report-submit')));
+      await tester.pumpAndSettle();
+      expect(find.text('Report Submitted!'), findsOneWidget);
+      expect(
+        tester.widget<SelectableText>(find.byKey(const Key('report-id'))).data,
+        matches(RegExp(r'^RPT-\d{4}-\d{6}$')),
+      );
+
+      await tester.tap(find.byKey(const Key('report-back-home')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Search destinations, tourist places...'),
+        findsOneWidget,
+      );
+    },
+  );
+
   testWidgets('mobile number entry validates and continues to OTP', (
     tester,
   ) async {
