@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../localization/app_language.dart';
+import 'profile_screens.dart';
 import 'registration_flow_screen.dart';
 import 'report_flow_screen.dart';
 
@@ -26,8 +28,36 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isMenuOpen = false;
   int _selectedTab = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    AppLanguage.language.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    AppLanguage.language.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) setState(() {});
+  }
+
   String _text(String english, String hindi) =>
-      widget.isHindi ? hindi : english;
+      AppLanguage.text(english, hindi);
+
+  void _openProfile() {
+    setState(() => _isMenuOpen = false);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => MyProfileScreen(
+          phoneNumber: widget.phoneNumber,
+          countryCode: widget.countryCode,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () => Navigator.of(context).push(
                                   MaterialPageRoute<void>(
                                     builder: (_) => RegistrationFlowScreen(
-                                      isHindi: widget.isHindi,
+                                      isHindi: AppLanguage.isHindi,
                                       phoneNumber: widget.phoneNumber,
                                       countryCode: widget.countryCode,
                                     ),
@@ -294,31 +324,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              Container(
-                key: const Key('menu-profile'),
-                height: 34,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE4DFE6),
+              Material(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(7),
+                child: InkWell(
+                  key: const Key('menu-profile'),
+                  onTap: _openProfile,
                   borderRadius: BorderRadius.circular(7),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.person_outline_rounded,
-                      color: Color(0xFF29252E),
-                      size: 19,
+                  child: Container(
+                    height: 34,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE4DFE6),
+                      borderRadius: BorderRadius.circular(7),
                     ),
-                    const SizedBox(width: 5),
-                    Text(
-                      _text('Profile', 'प्रोफ़ाइल'),
-                      style: const TextStyle(
-                        color: Color(0xFF29252E),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.person_outline_rounded,
+                          color: Color(0xFF29252E),
+                          size: 19,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          _text('Profile', 'प्रोफ़ाइल'),
+                          style: const TextStyle(
+                            color: Color(0xFF29252E),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
