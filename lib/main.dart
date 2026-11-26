@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' hide GlobalMaterialLocalizations;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/mobile_number_screen.dart';
 
@@ -16,6 +17,12 @@ class YatraFlowApp extends StatelessWidget {
     return MaterialApp(
       title: 'YatraFlow',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en', 'US'), Locale('hi', 'IN')],
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

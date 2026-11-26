@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
+import 'emergency_support_screen.dart';
 import 'registration_flow_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
                               _FeatureCard(
+                                featureKey: const Key('emergency-support-card'),
                                 title: _text(
                                   'Emergency & Support',
                                   'आपातकालीन सहायता',
@@ -61,8 +63,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageAsset:
                                     'assets/images/home/emergency_support.jpg',
                                 color: const Color(0xFFFF1B1B),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) =>
+                                        const EmergencySupportScreen(),
+                                  ),
+                                ),
                               ),
                               _FeatureCard(
+                                featureKey: const Key('register-card'),
                                 title: _text('Register', 'पंजीकरण'),
                                 imageAsset: 'assets/images/home/register.jpg',
                                 color: const Color(0xFF00A8C6),
@@ -400,12 +409,14 @@ class _FeatureCard extends StatelessWidget {
     required this.imageAsset,
     required this.color,
     this.onTap,
+    this.featureKey,
   });
 
   final String title;
   final String imageAsset;
   final Color color;
   final VoidCallback? onTap;
+  final Key? featureKey;
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +424,7 @@ class _FeatureCard extends StatelessWidget {
       color: color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        key: onTap == null ? null : const Key('register-card'),
+        key: featureKey,
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
