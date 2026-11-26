@@ -1,9 +1,16 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 
 import '../localization/app_language.dart';
+import '../services/travel_assistant_service.dart';
+import 'emergency_support_screen.dart';
+import 'explore_places_screen.dart';
+import 'guide_screen.dart';
 import 'profile_screens.dart';
 import 'registration_flow_screen.dart';
 import 'report_flow_screen.dart';
+import 'safety_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -26,6 +33,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isChatOpen = false;
   bool _isMenuOpen = false;
+  bool _isSendingChat = false;
+  String? _chatError;
+  final _chatMessages = <_ChatMessage>[];
+  final _assistantService = TravelAssistantService();
   int _selectedTab = 0;
 
   @override
@@ -37,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     AppLanguage.language.removeListener(_onLanguageChanged);
+    _assistantService.dispose();
     super.dispose();
   }
 
@@ -47,11 +59,61 @@ class _HomeScreenState extends State<HomeScreen> {
   String _text(String english, String hindi) =>
       AppLanguage.text(english, hindi);
 
+  Future<void> _sendChatMessage(String message) async {
+    final prompt = message.trim();
+    if (prompt.isEmpty || _isSendingChat) return;
+
+    final history = _chatMessages
+        .map((item) => {'role': item.role, 'text': item.text})
+        .toList(growable: false);
+    final recentHistory = history.length <= 20
+        ? history
+        : history.sublist(history.length - 20);
+    final usableHistory =
+        recentHistory.isNotEmpty && recentHistory.first['role'] == 'assistant'
+        ? recentHistory.skip(1).toList(growable: false)
+        : recentHistory;
+    setState(() {
+      _chatMessages.add(_ChatMessage(role: 'user', text: prompt));
+      _isSendingChat = true;
+      _chatError = null;
+    });
+
+    try {
+      final reply = await _assistantService.reply(
+        message: prompt,
+        history: usableHistory,
+      );
+      if (!mounted) return;
+      setState(() {
+        _chatMessages.add(_ChatMessage(role: 'assistant', text: reply));
+      });
+    } on TravelAssistantException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _chatError = AppLanguage.translate(error.message);
+      });
+    } finally {
+      if (mounted) setState(() => _isSendingChat = false);
+    }
+  }
+
   void _openProfile() {
     setState(() => _isMenuOpen = false);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => MyProfileScreen(
+          phoneNumber: widget.phoneNumber,
+          countryCode: widget.countryCode,
+        ),
+      ),
+    );
+  }
+
+  void _openExplorePlaces() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ExplorePlacesScreen(
           phoneNumber: widget.phoneNumber,
           countryCode: widget.countryCode,
         ),
@@ -92,6 +154,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageAsset:
                                     'assets/images/home/emergency_support.jpg',
                                 color: const Color(0xFFFF1B1B),
+                                cardKey: const Key('emergency-support-card'),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) =>
+                                        const EmergencySupportScreen(),
+                                  ),
+                                ),
                               ),
                               _FeatureCard(
                                 title: _text('Register', 'पंजीकरण'),
@@ -124,6 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 imageAsset:
                                     'assets/images/home/near_places.jpg',
                                 color: const Color(0xFF43B7CE),
+                                cardKey: const Key('near-places-card'),
+                                onTap: _openExplorePlaces,
                               ),
                             ],
                           ),
@@ -167,25 +238,35 @@ class _HomeScreenState extends State<HomeScreen> {
               color: const Color(0xFF514A59),
             ),
             Expanded(
-              child: Text(
-                _text(
-                  'Search destinations, tourist places...',
-                  'मंज़िलें और पर्यटन स्थल खोजें...',
-                ),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Color(0xFF514A59),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              child: InkWell(
+                key: const Key('home-search'),
+                onTap: _openExplorePlaces,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _text(
+                          'Search destinations, tourist places...',
+                          'मंज़िलें और पर्यटन स्थल खोजें...',
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFF514A59),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.search_rounded,
+                      color: Color(0xFF514A59),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 11),
+                  ],
                 ),
               ),
-            ),
-            const Icon(
-              Icons.search_rounded,
-              color: Color(0xFF514A59),
-              size: 20,
-            ),
-            const SizedBox(width: 11),
+            )
           ],
         ),
       ),
@@ -212,7 +293,31 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: InkWell(
                 key: Key('home-tab-$index'),
-                onTap: () => setState(() => _selectedTab = index),
+                onTap: () {
+                  if (index == 1) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => GuideScreen(
+                          phoneNumber: widget.phoneNumber,
+                          countryCode: widget.countryCode,
+                        ),
+                      ),
+                    );
+                  } else if (index == 2) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => SafetyScreen(
+                          phoneNumber: widget.phoneNumber,
+                          countryCode: widget.countryCode,
+                        ),
+                      ),
+                    );
+                  } else if (index == 3) {
+                    _openProfile();
+                  } else {
+                    setState(() => _selectedTab = index);
+                  }
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -406,17 +511,84 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView.builder(
+                  key: const Key('chat-history'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  itemCount: _chatMessages.length,
+                  itemBuilder: (context, index) {
+                    final message = _chatMessages[index];
+                    return _ChatMessageBubble(
+                      message: message.text,
+                      isUser: message.role == 'user',
+                    );
+                  },
+                ),
+              ),
+              if (_chatError != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    _chatError!,
+                    key: const Key('chat-error'),
+                    style: const TextStyle(
+                      color: Color(0xFF9B1C1C),
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              if (_isSendingChat)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 6),
+                  child: LinearProgressIndicator(
+                    key: Key('chat-loading'),
+                    minHeight: 2,
+                  ),
+                ),
               _ChatComposer(
                 hint: _text(
                   'What would you like to know?',
                   'आप क्या जानना चाहेंगे?',
                 ),
                 sendLabel: _text('Send message', 'संदेश भेजें'),
+                isSending: _isSendingChat,
+                onSend: (message) => unawaited(_sendChatMessage(message)),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ChatMessage {
+  const _ChatMessage({required this.role, required this.text});
+
+  final String role;
+  final String text;
+}
+
+class _ChatMessageBubble extends StatelessWidget {
+  const _ChatMessageBubble({required this.message, required this.isUser});
+
+  final String message;
+  final bool isUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 250),
+        margin: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+        decoration: BoxDecoration(
+          color: isUser ? const Color(0xFFF8F5E9) : const Color(0xFFF4E8B4),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(message, style: const TextStyle(fontSize: 11)),
       ),
     );
   }
@@ -501,10 +673,17 @@ class _FeatureCard extends StatelessWidget {
 }
 
 class _ChatComposer extends StatefulWidget {
-  const _ChatComposer({required this.hint, required this.sendLabel});
+  const _ChatComposer({
+    required this.hint,
+    required this.sendLabel,
+    required this.isSending,
+    required this.onSend,
+  });
 
   final String hint;
   final String sendLabel;
+  final bool isSending;
+  final ValueChanged<String> onSend;
 
   @override
   State<_ChatComposer> createState() => _ChatComposerState();
@@ -512,6 +691,13 @@ class _ChatComposer extends StatefulWidget {
 
 class _ChatComposerState extends State<_ChatComposer> {
   final _controller = TextEditingController();
+
+  void _send() {
+    final message = _controller.text.trim();
+    if (message.isEmpty || widget.isSending) return;
+    _controller.clear();
+    widget.onSend(message);
+  }
 
   @override
   void dispose() {
@@ -535,7 +721,7 @@ class _ChatComposerState extends State<_ChatComposer> {
               key: const Key('chat-message'),
               controller: _controller,
               textInputAction: TextInputAction.send,
-              onSubmitted: (_) => _controller.clear(),
+              onSubmitted: (_) => _send(),
               decoration: InputDecoration(
                 hintText: widget.hint,
                 hintStyle: const TextStyle(
@@ -563,10 +749,10 @@ class _ChatComposerState extends State<_ChatComposer> {
                 child: InkWell(
                   key: const Key('chat-send'),
                   customBorder: const CircleBorder(),
-                  onTap: () => _controller.clear(),
+                  onTap: _send,
                   child: const CircleAvatar(
                     radius: 11,
-                    backgroundColor: Color(0xFFD9D9D9),
+                    backgroundColor: Color(0xFF6650B6),
                     child: Icon(
                       Icons.arrow_upward_rounded,
                       size: 14,

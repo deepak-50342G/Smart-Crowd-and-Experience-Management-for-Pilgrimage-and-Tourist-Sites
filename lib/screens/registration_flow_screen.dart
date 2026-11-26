@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../auth/demo_auth_service.dart';
+import 'guide_screen.dart';
+import 'profile_screens.dart';
+import 'safety_screen.dart';
 
 enum _RegistrationStage { details, otp, qr, success }
 
@@ -753,7 +756,40 @@ class _RegistrationFlowScreenState extends State<RegistrationFlowScreen> {
             Expanded(
               child: InkWell(
                 key: Key('registration-tab-$index'),
-                onTap: () => setState(() => _selectedTab = index),
+                onTap: () {
+                  if (index == 0) {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  } else if (index == 1) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => GuideScreen(
+                          phoneNumber: widget.phoneNumber,
+                          countryCode: widget.countryCode,
+                        ),
+                      ),
+                    );
+                  } else if (index == 2) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => SafetyScreen(
+                          phoneNumber: widget.phoneNumber,
+                          countryCode: widget.countryCode,
+                        ),
+                      ),
+                    );
+                  } else if (index == 3) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => MyProfileScreen(
+                          phoneNumber: widget.phoneNumber,
+                          countryCode: widget.countryCode,
+                        ),
+                      ),
+                    );
+                  } else {
+                    setState(() => _selectedTab = index);
+                  }
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

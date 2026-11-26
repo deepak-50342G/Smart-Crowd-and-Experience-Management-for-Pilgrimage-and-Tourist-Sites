@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../localization/app_language.dart';
+import 'guide_screen.dart';
+import 'profile_screens.dart';
+import 'safety_screen.dart';
 
 const _reportBlue = Color(0xFF2864ED);
 const _reportNavy = Color(0xFF20365D);
@@ -27,7 +30,9 @@ class ReportDraft {
 }
 
 class ReportProblemScreen extends StatefulWidget {
-  const ReportProblemScreen({super.key});
+  const ReportProblemScreen({this.demoOnly = false, super.key});
+
+  final bool demoOnly;
 
   @override
   State<ReportProblemScreen> createState() => _ReportProblemScreenState();
@@ -173,6 +178,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             location: 'Not provided',
             photoBytes: _photoBytes,
           ),
+          demoOnly: widget.demoOnly,
         ),
       ),
     );
@@ -216,6 +222,10 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                     height: 1.4,
                   ),
                 ),
+                if (widget.demoOnly) ...[
+                  const SizedBox(height: 14),
+                  const _ReportDemoNotice(),
+                ],
                 const SizedBox(height: 24),
                 const _SectionLabel('What type of problem are you reporting?'),
                 const SizedBox(height: 12),
@@ -319,15 +329,22 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
 }
 
 class ReviewYourReportScreen extends StatelessWidget {
-  const ReviewYourReportScreen({required this.draft, super.key});
+  const ReviewYourReportScreen({
+    required this.draft,
+    this.demoOnly = false,
+    super.key,
+  });
 
   final ReportDraft draft;
+  final bool demoOnly;
 
   void _submit(BuildContext context) {
-    final reportId = _generateReportId();
+    final generatedId = _generateReportId();
+    final reportId = demoOnly ? 'DEMO-$generatedId' : generatedId;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute<void>(
-        builder: (_) => ReportSubmittedScreen(reportId: reportId),
+        builder: (_) =>
+            ReportSubmittedScreen(reportId: reportId, demoOnly: demoOnly),
       ),
       (route) => route.isFirst,
     );
@@ -371,6 +388,10 @@ class ReviewYourReportScreen extends StatelessWidget {
                     height: 1.4,
                   ),
                 ),
+                if (demoOnly) ...[
+                  const SizedBox(height: 14),
+                  const _ReportDemoNotice(),
+                ],
                 const SizedBox(height: 22),
                 _ReviewSection(
                   title: 'CATEGORY',
@@ -477,9 +498,14 @@ class ReviewYourReportScreen extends StatelessWidget {
 }
 
 class ReportSubmittedScreen extends StatelessWidget {
-  const ReportSubmittedScreen({required this.reportId, super.key});
+  const ReportSubmittedScreen({
+    required this.reportId,
+    this.demoOnly = false,
+    super.key,
+  });
 
   final String reportId;
+  final bool demoOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -507,7 +533,9 @@ class ReportSubmittedScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  AppLanguage.translate('Report Submitted!'),
+                  AppLanguage.translate(
+                    demoOnly ? 'Demo Report Created' : 'Report Submitted!',
+                  ),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: _reportNavy,
@@ -518,7 +546,9 @@ class ReportSubmittedScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   AppLanguage.translate(
-                    'Thank you for helping us improve this destination.',
+                    demoOnly
+                        ? 'This demo report was not saved or sent to a support team.'
+                        : 'Thank you for helping us improve this destination.',
                   ),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -542,7 +572,9 @@ class ReportSubmittedScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        AppLanguage.translate('REPORT ID'),
+                        AppLanguage.translate(
+                          demoOnly ? 'DEMO REPORT ID' : 'REPORT ID',
+                        ),
                         style: TextStyle(
                           color: Color(0xFF66758D),
                           fontSize: 12,
@@ -777,6 +809,34 @@ class _ReportCameraScreenState extends State<ReportCameraScreen> {
   }
 }
 
+class _ReportDemoNotice extends StatelessWidget {
+  const _ReportDemoNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const Key('report-demo-notice'),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3DC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFF2D7A7)),
+      ),
+      child: Text(
+        AppLanguage.translate(
+          'Demo only: this report will not be sent to a support team.',
+        ),
+        style: const TextStyle(
+          color: Color(0xFF684700),
+          fontSize: 13,
+          height: 1.4,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
 class _ReportFlowFrame extends StatelessWidget {
   const _ReportFlowFrame({required this.child, this.primaryAction});
 
@@ -863,6 +923,27 @@ class _ReportBottomNavigationState extends State<_ReportBottomNavigation> {
                   onTap: () {
                     if (index == 0) {
                       Navigator.of(context).popUntil((route) => route.isFirst);
+                    } else if (index == 1) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const GuideScreen(),
+                        ),
+                      );
+                    } else if (index == 2) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const SafetyScreen(),
+                        ),
+                      );
+                    } else if (index == 3) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const MyProfileScreen(
+                            phoneNumber: '',
+                            countryCode: '+91',
+                          ),
+                        ),
+                      );
                     } else {
                       setState(() => _selectedTab = index);
                     }

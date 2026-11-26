@@ -53,6 +53,140 @@ class AppLanguage {
     'Edit profile': 'प्रोफ़ाइल संपादित करें',
     'Home': 'होम',
     'Guide': 'गाइड',
+    'Latest Updates & Alerts': 'नवीनतम अपडेट और अलर्ट',
+    'Notifications': 'सूचनाएँ',
+    'ALERT': 'अलर्ट',
+    'EVENT': 'कार्यक्रम',
+    'NEWS': 'समाचार',
+    'INFO': 'जानकारी',
+    'Heavy Rainfall Alert': 'भारी बारिश का अलर्ट',
+    'Avoid travel to lower areas of Vaishno Devi track.':
+        'वैष्णो देवी ट्रैक के निचले क्षेत्रों में जाने से बचें।',
+    'Katra & Vaishno Devi track': 'कटरा और वैष्णो देवी ट्रैक',
+    'Bhajan Sandhya': 'भजन संध्या',
+    'Today at 7:00 PM at Bhawan Premises.':
+        'आज शाम 7:00 बजे भवन परिसर में।',
+    'Bhawan Premises': 'भवन परिसर',
+    'New Facilities at Bhawan': 'भवन में नई सुविधाएँ',
+    'Improved queue management system now live.':
+        'कतार प्रबंधन की बेहतर प्रणाली अब शुरू हो गई है।',
+    'Bhawan': 'भवन',
+    'Helpline Update': 'हेल्पलाइन अपडेट',
+    'New helpline number: 1800-891-9031 (sample)':
+        'नया हेल्पलाइन नंबर: 1800-891-9031 (नमूना)',
+    'Visitor support': 'आगंतुक सहायता',
+    '2h ago': '2 घंटे पहले',
+    '3h ago': '3 घंटे पहले',
+    '5h ago': '5 घंटे पहले',
+    '6h ago': '6 घंटे पहले',
+    'Alert Details': 'अलर्ट का विवरण',
+    'Advisory': 'सलाह',
+    'Recommended precautions': 'अनुशंसित सावधानियाँ',
+    'Heavy rainfall may affect visibility and travel conditions on parts of the route. Check official updates before departure.':
+        'भारी बारिश से मार्ग के कुछ हिस्सों में दृश्यता और यात्रा की स्थिति प्रभावित हो सकती है। निकलने से पहले आधिकारिक अपडेट देखें।',
+    'Avoid exposed or low-lying areas.':
+        'खुले या निचले क्षेत्रों से बचें।',
+    'Follow route staff and official guidance.':
+        'मार्ग कर्मचारियों और आधिकारिक निर्देशों का पालन करें।',
+    'Allow extra time; conditions may change.':
+        'अतिरिक्त समय रखें; परिस्थितियाँ बदल सकती हैं।',
+    'Bhajan Sandhya is scheduled for today at 7:00 PM at the Bhawan Premises.':
+        'भजन संध्या आज शाम 7:00 बजे भवन परिसर में निर्धारित है।',
+    'Arrive early and follow venue directions.':
+        'जल्दी पहुँचें और स्थल के निर्देशों का पालन करें।',
+    'Keep walkways clear and follow staff instructions.':
+        'रास्ते खुले रखें और कर्मचारियों के निर्देशों का पालन करें।',
+    'Check local announcements for schedule changes.':
+        'समय-सारणी में बदलाव के लिए स्थानीय घोषणाएँ देखें।',
+    'An improved queue management system is now available at Bhawan to help guide visitors through the premises.':
+        'परिसर में आगंतुकों का मार्गदर्शन करने के लिए भवन में कतार प्रबंधन की बेहतर प्रणाली उपलब्ध है।',
+    'Follow the queue signs and staff directions.':
+        'कतार के संकेतों और कर्मचारियों के निर्देशों का पालन करें।',
+    'Keep your registration details accessible.':
+        'अपनी पंजीकरण जानकारी पास रखें।',
+    'Allow extra time during busy periods.':
+        'भीड़ के समय अतिरिक्त समय रखें।',
+    'This sample notice includes a demonstration helpline number. Verify contact details through official channels before calling.':
+        'इस नमूना सूचना में डेमो हेल्पलाइन नंबर है। कॉल करने से पहले आधिकारिक माध्यमों से संपर्क विवरण की पुष्टि करें।',
+    'Do not rely on sample contact details.':
+        'नमूना संपर्क विवरण पर निर्भर न रहें।',
+    'Use verified official sources for assistance.':
+        'सहायता के लिए सत्यापित आधिकारिक स्रोतों का उपयोग करें।',
+    'For immediate danger, contact local emergency services.':
+        'तत्काल खतरे में स्थानीय आपातकालीन सेवाओं से संपर्क करें।',
+    'Illustrative alert content — not live update data.':
+        'उदाहरण के लिए अलर्ट सामग्री — लाइव अपडेट नहीं।',
+    'More': 'और',
+    'Travel safely': 'सुरक्षित यात्रा',
+    'A few essentials to help you stay prepared, aware and confident on your journey.':
+        'आपकी यात्रा में तैयार, सतर्क और आत्मविश्वासी रहने के लिए कुछ ज़रूरी बातें।',
+    'Move to a safe place. Contact local emergency services and share your location. Save the local emergency number before you travel.':
+        'किसी सुरक्षित जगह पर जाएँ। स्थानीय आपातकालीन सेवाओं से संपर्क करें और अपनी लोकेशन साझा करें। यात्रा से पहले स्थानीय आपातकालीन नंबर सहेजें।',
+    'Before you head out': 'निकलने से पहले',
+    'Keep documents handy': 'ज़रूरी दस्तावेज़ पास रखें',
+    'Carry a copy of your ID, visa and insurance. Store digital copies securely.':
+        'अपने पहचान पत्र, वीज़ा और बीमा की प्रति साथ रखें। डिजिटल प्रतियाँ सुरक्षित रखें।',
+    'Share your plans': 'अपनी योजनाएँ साझा करें',
+    'Tell someone you trust where you are going and when you expect to return.':
+        'किसी भरोसेमंद व्यक्ति को बताएँ कि आप कहाँ जा रहे हैं और कब लौटेंगे।',
+    'Choose trusted transport': 'विश्वसनीय परिवहन चुनें',
+    'Use licensed services. Check the driver and vehicle details before getting in.':
+        'लाइसेंस प्राप्त सेवाओं का उपयोग करें। बैठने से पहले चालक और वाहन का विवरण जाँचें।',
+    'Protect your belongings': 'अपने सामान की सुरक्षा करें',
+    'Keep valuables out of sight and bags close. Never share PINs or one-time passwords.':
+        'कीमती सामान नज़र से दूर और बैग पास रखें। PIN या OTP कभी साझा न करें।',
+    'Plan for your health': 'अपनी सेहत की योजना बनाएँ',
+    'Carry essential medicines and safe water. Check food hygiene and know your limits.':
+        'ज़रूरी दवाएँ और सुरक्षित पानी साथ रखें। भोजन की स्वच्छता जाँचें और अपनी सीमाएँ जानें।',
+    'Check local conditions': 'स्थानीय परिस्थितियाँ जाँचें',
+    'Follow local advice, weather alerts and signs. Avoid isolated areas, especially after dark.':
+        'स्थानीय सलाह, मौसम अलर्ट और संकेतों का पालन करें। खासकर अँधेरा होने के बाद सुनसान क्षेत्रों से बचें।',
+    'Stay alert. Trust your instincts. Ask for help.':
+        'सतर्क रहें। अपनी समझ पर भरोसा करें। ज़रूरत पड़ने पर मदद माँगें।',
+    'Explore Jaipur': 'जयपुर देखें',
+    'Find your place. Skip the crowds.':
+        'अपनी जगह खोजें। भीड़ से बचें।',
+    'Search tourist sites': 'पर्यटन स्थल खोजें',
+    'All places': 'सभी जगहें',
+    'Quiet now': 'अभी शांत',
+    'Near me': 'मेरे पास',
+    'Nearby suggestions are examples; location is not accessed.':
+        'आस-पास के सुझाव उदाहरण हैं; लोकेशन का उपयोग नहीं किया जा रहा।',
+    'A good time to explore': 'घूमने का अच्छा समय',
+    'Sample crowd suggestions. Check local updates before you go.':
+        'भीड़ के अनुमान उदाहरण हैं। जाने से पहले स्थानीय अपडेट देखें।',
+    'Fort & Heritage': 'किला और विरासत',
+    'Architecture': 'वास्तुकला',
+    'Museum & Culture': 'संग्रहालय और संस्कृति',
+    'Science & Heritage': 'विज्ञान और विरासत',
+    'Palace & Scenic View': 'महल और दर्शनीय स्थल',
+    'Museum · Architecture · Heritage': 'संग्रहालय · वास्तुकला · विरासत',
+    'Fort · Scenic viewpoint · Heritage': 'किला · दर्शनीय स्थल · विरासत',
+    'Military heritage · Fort · Photography':
+        'सैन्य विरासत · किला · फ़ोटोग्राफ़ी',
+    '11 km': '11 किमी',
+    '1.2 km': '1.2 किमी',
+    '2.1 km': '2.1 किमी',
+    '2.2 km': '2.2 किमी',
+    '4.8 km': '4.8 किमी',
+    'Nearby': 'आस-पास',
+    'Low': 'कम',
+    'Moderate': 'मध्यम',
+    'Busy': 'भीड़',
+    'capacity': 'क्षमता',
+    'Best time: now–11 AM': 'सबसे अच्छा समय: अभी–सुबह 11 बजे',
+    'Quieter after 4 PM': 'शाम 4 बजे के बाद कम भीड़',
+    'Try Amber Fort instead': 'इसके बजाय आमेर किला देखें',
+    'Best time: 3–7 PM': 'सबसे अच्छा समय: दोपहर 3–7 बजे',
+    'Best time: 4:30–5:30 PM': 'सबसे अच्छा समय: शाम 4:30–5:30 बजे',
+    'Best time: 8–11 AM': 'सबसे अच्छा समय: सुबह 8–11 बजे',
+    'Amber Fort · Crowd forecast': 'आमेर किला · भीड़ का अनुमान',
+    'Now': 'अभी',
+    'Sample crowd estimate — not live data.':
+        'भीड़ का नमूना अनुमान — लाइव डेटा नहीं।',
+    'No places found': 'कोई जगह नहीं मिली',
+    'Try another search for': 'इसके लिए दूसरी खोज आज़माएँ',
+    'Search': 'खोजें',
     'Safety': 'सुरक्षा',
     'You': 'आप',
     'Menu': 'मेन्यू',
@@ -250,6 +384,42 @@ class AppLanguage {
     'Scan me': 'मुझे स्कैन करें',
     'You can enter now': 'अब आप प्रवेश कर सकते हैं',
     'Emergency & Support': 'आपातकालीन सहायता',
+    'Confirm SOS': 'एसओएस की पुष्टि करें',
+    'This is a demo. No alert will be sent and your location will not be shared.':
+        'यह एक डेमो है। कोई अलर्ट नहीं भेजा जाएगा और आपकी लोकेशन साझा नहीं की जाएगी।',
+    'Continue demo': 'डेमो जारी रखें',
+    'How can we help?': 'हम आपकी कैसे मदद कर सकते हैं?',
+    'For immediate danger, use SOS. For other concerns, send a non-urgent report.':
+        'तत्काल खतरे में SOS का उपयोग करें। अन्य समस्याओं के लिए गैर-आपातकालीन रिपोर्ट भेजें।',
+    'Need urgent help?': 'क्या आपको तुरंत मदद चाहिए?',
+    'The SOS flow is a local demo and does not contact emergency services.':
+        'SOS प्रक्रिया स्थानीय डेमो है और आपातकालीन सेवाओं से संपर्क नहीं करती।',
+    'SOS Emergency': 'आपातकालीन SOS',
+    'Report a non-urgent issue': 'गैर-आपातकालीन समस्या की रिपोर्ट करें',
+    'Describe a safety, cleanliness, or facility concern.':
+        'सुरक्षा, स्वच्छता या सुविधा से जुड़ी समस्या बताएँ।',
+    'Start a report': 'रिपोर्ट शुरू करें',
+    'Demo only: requests are not sent and location is not shared.':
+        'केवल डेमो: अनुरोध नहीं भेजे जाते और लोकेशन साझा नहीं की जाती।',
+    'Emergency Alert Demo': 'आपातकालीन अलर्ट डेमो',
+    'Demo alert created': 'डेमो अलर्ट बनाया गया',
+    'No emergency alert was sent and no location was shared.':
+        'कोई आपातकालीन अलर्ट नहीं भेजा गया और लोकेशन साझा नहीं की गई।',
+    'DEMO REQUEST ID': 'डेमो अनुरोध आईडी',
+    'STATUS': 'स्थिति',
+    'Not sent (demo)': 'नहीं भेजा गया (डेमो)',
+    'Not shared': 'साझा नहीं की गई',
+    'TIME': 'समय',
+    'Call configured contact': 'कॉन्फ़िगर किए गए संपर्क को कॉल करें',
+    'Configured contact': 'कॉन्फ़िगर किया गया संपर्क',
+    'Could not open the phone app. Dial manually:':
+        'फ़ोन ऐप नहीं खुला। इस नंबर पर मैन्युअल रूप से कॉल करें:',
+    'Demo only: this report will not be sent to a support team.':
+        'केवल डेमो: यह रिपोर्ट सहायता टीम को नहीं भेजी जाएगी।',
+    'Demo Report Created': 'डेमो रिपोर्ट बनाई गई',
+    'This demo report was not saved or sent to a support team.':
+        'यह डेमो रिपोर्ट न सहेजी गई और न सहायता टीम को भेजी गई।',
+    'DEMO REPORT ID': 'डेमो रिपोर्ट आईडी',
     'Register': 'पंजीकरण',
     'Near Places': 'आस-पास की जगहें',
     'Not provided': 'नहीं दिया गया',
@@ -269,6 +439,20 @@ class AppLanguage {
     'Family': 'परिवार',
     'Search destinations, tourist places...': 'गंतव्य और पर्यटन स्थल खोजें...',
     'Open travel assistant': 'यात्रा सहायक खोलें',
+    'The reply timed out.': 'जवाब मिलने में समय समाप्त हो गया।',
+    'The local Gemini proxy is unreachable.':
+        'स्थानीय Gemini proxy तक पहुँचा नहीं जा सका।',
+    'The Gemini proxy returned an invalid response.':
+        'Gemini proxy ने अमान्य जवाब दिया।',
+    'Gemini request failed.': 'Gemini अनुरोध विफल हुआ।',
+    'Gemini returned an empty response.': 'Gemini ने खाली जवाब दिया।',
+    'Could not connect to Gemini. Check the server connection and try again.':
+        'Gemini से कनेक्ट नहीं हो सका। सर्वर कनेक्शन जाँचकर फिर कोशिश करें।',
+    'Gemini quota exceeded. Check your API key and quota.':
+        'Gemini quota समाप्त हो गया। API key और quota जाँचें।',
+    'Gemini returned an invalid response.': 'Gemini ने अमान्य जवाब दिया।',
+    'Gemini did not return a text response. Try rephrasing your message.':
+        'Gemini ने पाठ वाला जवाब नहीं दिया। अपना संदेश बदलकर पूछें।',
     'Close menu': 'मेन्यू बंद करें',
     'About the app': 'ऐप के बारे में',
     'Privacy Policy': 'गोपनीयता नीति',

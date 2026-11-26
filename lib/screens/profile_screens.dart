@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../localization/app_language.dart';
 import '../models/profile_data.dart';
+import 'guide_screen.dart';
+import 'safety_screen.dart';
 
 const _profilePurple = Color(0xFF563B98);
 const _profileInk = Color(0xFF302A43);
@@ -141,7 +143,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _ProfileBottomNavigation(),
+      bottomNavigationBar: _ProfileBottomNavigation(
+        phoneNumber: widget.phoneNumber,
+        countryCode: widget.countryCode,
+      ),
     );
   }
 }
@@ -1044,7 +1049,13 @@ class _ProfilePreference extends StatelessWidget {
 }
 
 class _ProfileBottomNavigation extends StatefulWidget {
-  const _ProfileBottomNavigation();
+  const _ProfileBottomNavigation({
+    required this.phoneNumber,
+    required this.countryCode,
+  });
+
+  final String phoneNumber;
+  final String countryCode;
 
   @override
   State<_ProfileBottomNavigation> createState() =>
@@ -1080,6 +1091,24 @@ class _ProfileBottomNavigationState extends State<_ProfileBottomNavigation> {
                   onTap: () {
                     if (index == 0) {
                       Navigator.of(context).popUntil((route) => route.isFirst);
+                    } else if (index == 1) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => GuideScreen(
+                            phoneNumber: widget.phoneNumber,
+                            countryCode: widget.countryCode,
+                          ),
+                        ),
+                      );
+                    } else if (index == 2) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => SafetyScreen(
+                            phoneNumber: widget.phoneNumber,
+                            countryCode: widget.countryCode,
+                          ),
+                        ),
+                      );
                     } else {
                       setState(() => _selectedTab = index);
                     }
