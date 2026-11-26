@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AuthBackground extends StatelessWidget {
   const AuthBackground({required this.child, super.key});
