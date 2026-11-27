@@ -29,11 +29,16 @@ void main() {
     expect(find.byKey(const Key('place-card-amber-fort')), findsOneWidget);
     expect(find.byKey(const Key('place-card-hawa-mahal')), findsOneWidget);
     expect(find.byKey(const Key('place-card-city-palace')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-amber-fort')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-hawa-mahal')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-city-palace')), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('explore-filter-quiet')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('place-card-jantar-mantar')), findsOneWidget);
     expect(find.byKey(const Key('place-card-jal-mahal')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-jantar-mantar')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-jal-mahal')), findsOneWidget);
     expect(find.byKey(const Key('place-card-hawa-mahal')), findsNothing);
 
     await tester.tap(find.byKey(const Key('explore-filter-near')));
@@ -41,6 +46,9 @@ void main() {
     expect(find.byKey(const Key('place-card-albert-hall')), findsOneWidget);
     expect(find.byKey(const Key('place-card-nahargarh-fort')), findsOneWidget);
     expect(find.byKey(const Key('place-card-jaigarh-fort')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-albert-hall')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-nahargarh-fort')), findsOneWidget);
+    expect(find.byKey(const Key('place-image-jaigarh-fort')), findsOneWidget);
   });
 
   testWidgets('Home search opens Explore and filters after submission', (

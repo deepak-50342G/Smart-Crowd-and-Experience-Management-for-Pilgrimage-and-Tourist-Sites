@@ -57,7 +57,7 @@ const _places = <_Place>[
     nearMe: false,
     icon: Icons.castle_rounded,
     placeholderColor: Color(0xFFE7D6BB),
-    imageAsset: 'assets/images/home/home_banner.png',
+    imageAsset: 'assets/images/home/amber_fort.jpg',
     keywords: ['Amer Fort', 'fort', 'heritage', 'Jaipur'],
   ),
   _Place(
@@ -72,6 +72,7 @@ const _places = <_Place>[
     nearMe: false,
     icon: Icons.account_balance_rounded,
     placeholderColor: Color(0xFFF5DDCC),
+    imageAsset: 'assets/images/home/hawa_mahal.jpg',
     keywords: ['Palace of Winds', 'architecture', 'palace', 'Jaipur'],
   ),
   _Place(
@@ -86,6 +87,7 @@ const _places = <_Place>[
     nearMe: false,
     icon: Icons.museum_rounded,
     placeholderColor: Color(0xFFE9DDEB),
+    imageAsset: 'assets/images/home/city_palace.jpg',
     keywords: ['museum', 'culture', 'palace', 'Jaipur'],
   ),
   _Place(
@@ -100,6 +102,7 @@ const _places = <_Place>[
     nearMe: false,
     icon: Icons.public_rounded,
     placeholderColor: Color(0xFFDCEBFA),
+    imageAsset: 'assets/images/home/jantar_mantar.jpg',
     keywords: ['observatory', 'science', 'heritage', 'Jaipur'],
   ),
   _Place(
@@ -114,6 +117,7 @@ const _places = <_Place>[
     nearMe: false,
     icon: Icons.water_rounded,
     placeholderColor: Color(0xFFD9EDF2),
+    imageAsset: 'assets/images/home/jal_mahal.jpg',
     keywords: ['water', 'lake', 'scenic', 'Jaipur'],
   ),
   _Place(
@@ -128,6 +132,7 @@ const _places = <_Place>[
     nearMe: true,
     icon: Icons.account_balance_rounded,
     placeholderColor: Color(0xFFE8E1D8),
+    imageAsset: 'assets/images/home/albert_hall_museum.jpg',
     keywords: ['museum', 'architecture', 'heritage', 'Jaipur'],
   ),
   _Place(
@@ -142,6 +147,7 @@ const _places = <_Place>[
     nearMe: true,
     icon: Icons.castle_rounded,
     placeholderColor: Color(0xFFE4E6D8),
+    imageAsset: 'assets/images/home/nahargarh_fort.jpg',
     keywords: ['fort', 'viewpoint', 'heritage', 'Jaipur'],
   ),
   _Place(
@@ -156,6 +162,7 @@ const _places = <_Place>[
     nearMe: true,
     icon: Icons.castle_rounded,
     placeholderColor: Color(0xFFE9D8C6),
+    imageAsset: 'assets/images/home/jaigarh_fort.jpg',
     keywords: ['military', 'fort', 'photography', 'Jaipur'],
   ),
 ];
@@ -488,6 +495,8 @@ class _PlaceCard extends StatelessWidget {
                     )
                   : Image.asset(
                       place.imageAsset!,
+                      key: Key('place-image-${place.id}'),
+                      semanticLabel: place.name,
                       fit: BoxFit.cover,
                       errorBuilder: (_, _, _) => ColoredBox(
                         color: place.placeholderColor,

@@ -78,4 +78,24 @@ void main() {
       ),
     );
   });
+
+  test('explains how to start the backend when the connection fails', () async {
+    final service = TravelAssistantService(
+      client: MockClient((_) async {
+        throw http.ClientException('Connection refused');
+      }),
+    );
+    addTearDown(service.dispose);
+
+    await expectLater(
+      service.reply(message: 'Hello', history: const []),
+      throwsA(
+        isA<TravelAssistantException>().having(
+          (error) => error.message,
+          'message',
+          'The chat backend is unreachable. Start it with npm start from the backend folder.',
+        ),
+      ),
+    );
+  });
 }

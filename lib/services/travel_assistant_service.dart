@@ -38,7 +38,7 @@ class TravelAssistantService {
       throw const TravelAssistantException('The reply timed out.');
     } on http.ClientException {
       throw const TravelAssistantException(
-        'The local Gemini proxy is unreachable.',
+        'The chat backend is unreachable. Start it with npm start from the backend folder.',
       );
     }
 

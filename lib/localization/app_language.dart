@@ -440,8 +440,8 @@ class AppLanguage {
     'Search destinations, tourist places...': 'गंतव्य और पर्यटन स्थल खोजें...',
     'Open travel assistant': 'यात्रा सहायक खोलें',
     'The reply timed out.': 'जवाब मिलने में समय समाप्त हो गया।',
-    'The local Gemini proxy is unreachable.':
-        'स्थानीय Gemini proxy तक पहुँचा नहीं जा सका।',
+    'The chat backend is unreachable. Start it with npm start from the backend folder.':
+        'Chat backend तक पहुँचा नहीं जा सका। backend फ़ोल्डर में npm start चलाएँ।',
     'The Gemini proxy returned an invalid response.':
         'Gemini proxy ने अमान्य जवाब दिया।',
     'Gemini request failed.': 'Gemini अनुरोध विफल हुआ।',
